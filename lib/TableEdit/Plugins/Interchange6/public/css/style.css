@@ -1,0 +1,35 @@
+.product-images img {
+	height: 100px;
+	margin: 0 10px 10px -20px;
+	border-radius: 4px;
+}
+
+.product-images span.remove {
+	position: relative;
+	vertical-align: top;
+	left: 9px;
+	width: 20px;
+	height: 20px;
+	background: whitesmoke;
+	display: inline-block;
+	text-align: center;
+	font-size: 14px;
+	top: 5px;
+	border-radius: 4px;
+	opacity: 0.8;
+}
+
+.product-images span.remove:hover {
+	opacity: 1;
+	cursor: pointer;
+}
+
+.product-images span.item, .product-images span.add {
+	display: inline-block;
+}
+
+.product-images span.add {
+	height: 100px;
+	margin: 0 10px 10px 0px;
+	vertical-align: top;
+}

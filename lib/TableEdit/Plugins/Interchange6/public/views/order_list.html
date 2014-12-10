@@ -1,0 +1,31 @@
+<h1>Orders: {{ title }}</h1>
+
+<ul class="nav nav-pills" >
+				<li class="sub-menu-item" ng-repeat="link in types">
+					<a class="sub-menu-link mn" href="#/Order/list/{{link.type}}">{{link.label}}</a>
+				</li>
+	</ul>
+
+
+<div id="list-grid" ng-include="'views/list_grid.html'" ng-init="actions='order_list';"></div>
+
+<div class="btn-group btn-group-xs">
+	<button class="btn btn-success" ng-click="check('all')" ng-class="{'active': checked == 'all'}">Check all</button>
+	<button class="btn btn-primary" ng-click="check('shipped')" ng-class="{'active': checked == 'shipped'}"> Check all shipped	</button>
+	<button class="btn btn-primary" ng-click="check('pending')" ng-class="{'active': checked == 'pending'}"> Check all pending	</button>
+	<button class="btn btn-primary" ng-click="check('waiting')" ng-class="{'active': checked == 'waiting'}">Check all waiting	</button>
+	<button class="btn btn-primary" ng-click="check('partial')" ng-class="{'active': checked == 'partial'}"> Check all partial	</button>
+	<button class="btn btn-warning" ng-click="check('none')" ng-class="{'active': checked == 'none'}">Uncheck all</button>
+</div>
+
+<div class="well" style="margin-top:20px; text-align: right">
+	<div class="btn-group btn-group-xs">
+		<button class="btn btn-default" ng-click="multi('delete')" >Delete checked</button>
+		<button class="btn btn-default" ng-click="multi('archive')">Archive checked</button>
+		<button class="btn btn-default" ng-click="multi('ship')" >Ship checked</button>
+	</div>
+</div>
+
+	
+
+

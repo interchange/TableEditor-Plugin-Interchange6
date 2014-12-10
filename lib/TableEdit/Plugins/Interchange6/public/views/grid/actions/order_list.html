@@ -1,0 +1,5 @@
+<span class="btn-group btn-group-xs ng-scope">
+	<a title="Archive order #{{row.columns.orders_id}}" class="btn btn-warning" ng-click="single('archive', row.columns.orders_id )">></a> 
+	<a title="Delete order #{{row.columns.orders_id}}" class="btn btn-danger" ng-click="single('delete', row.columns.orders_id )">X</a> 
+</span>
+<input ng-model="row.checked" type="checkbox" name="order" value="{{ row.order_number }}" style="vertical-align: middle;margin: 2px;"> 
