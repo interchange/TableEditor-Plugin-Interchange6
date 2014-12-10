@@ -1,4 +1,4 @@
-package TableEdit::Plugins::IC6::API;
+package TableEdit::Plugins::Interchange6::API;
 use Dancer ':syntax';
 use POSIX;
 use Dancer::Plugin::DBIC qw(schema resultset rset);
