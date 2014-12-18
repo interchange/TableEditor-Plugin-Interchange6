@@ -1,14 +1,14 @@
 'use strict';
 
 
-custom_routes['/Order/list/:type'] = { templateUrl: '/api/plugins/IC6/public/views/order_list.html', controller: 'OrderListCtrl' };
-custom_routes['/Order/list'] = { templateUrl: '/api/plugins/IC6/public/views/order_list.html', controller: 'OrderListRedirectCtrl' };
-custom_routes['/Order/view/:id'] = { templateUrl: '/api/plugins/IC6/public/views/order.html', controller: 'OrderEditCtrl' };
-custom_routes['/Order/view/:id'] = { templateUrl: '/api/plugins/IC6/public/views/order.html', controller: 'OrderEditCtrl' };
+custom_routes['/Order/list/:type'] = { templateUrl: 'api/plugins/Interchange6/public/views/order_list.html', controller: 'OrderListCtrl' };
+custom_routes['/Order/list'] = { templateUrl: 'api/plugins/Interchange6/public/views/order_list.html', controller: 'OrderListRedirectCtrl' };
+custom_routes['/Order/view/:id'] = { templateUrl: 'api/plugins/Interchange6/public/views/order.html', controller: 'OrderEditCtrl' };
+custom_routes['/Order/view/:id'] = { templateUrl: 'api/plugins/Interchange6/public/views/order.html', controller: 'OrderEditCtrl' };
 
-custom_routes['/Product/edit/:id'] = { templateUrl: '/api/plugins/IC6/public/views/product_form.html', controller: 'ProductEditCtrl' };
+custom_routes['/Product/edit/:id'] = { templateUrl: 'api/plugins/Interchange6/public/views/product_form.html', controller: 'ProductEditCtrl' };
 
-custom_routes['/Message/list'] = { templateUrl: '/api/plugins/IC6/public/views/message_list.html', controller: 'MessageListCtrl' };
+custom_routes['/Message/list'] = { templateUrl: 'api/plugins/Interchange6/public/views/message_list.html', controller: 'MessageListCtrl' };
 
 var class_name = "Order";
 
