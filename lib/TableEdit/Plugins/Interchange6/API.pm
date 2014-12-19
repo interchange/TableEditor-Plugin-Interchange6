@@ -124,6 +124,44 @@ post '/Order/edit' => sub {
 };
 
 
+post '/User/edit' => sub {
+	my $body = from_json request->body;
+	my $class = 'User';
+	
+	if($body->{action} eq 'delete'){
+		for my $item (@{$body->{items}}){
+			my $order = schema->resultset($class)->find($item);
+			$order->delete;
+		}
+		return 1;
+	}
+	elsif($body->{action} eq 'activate'){
+		for my $item (@{$body->{items}}){
+			my $order = schema->resultset($class)->find($item);
+			$order->active('1');
+			$order->update;
+		}
+		return 1;
+	}
+	elsif($body->{action} eq 'deactivate'){
+		for my $item (@{$body->{items}}){
+			my $order = schema->resultset($class)->find($item);
+			$order->active('0');
+			$order->update;
+		}
+		return 1;
+	}
+	
+	return undef;
+};
+
+
+post '/user' => sub {
+	params->{item}->{values}->{username} = lc params->{item}->{values}->{username}; 
+	pass;
+};
+
+
 post '/:class' => sub {
 	debug "Validating ". params->{class}."...";
 	pass;

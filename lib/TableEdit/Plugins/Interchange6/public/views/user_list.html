@@ -1,0 +1,15 @@
+<div ng-if="!data.column_list" ng-include="'views/loading.html'"></div>
+
+<div ng-if="data.column_list">
+	<div class="pull-right">
+		<a ng-click="create()" href="#/{{data.class}}/new" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> New {{data.class_label}}</a>
+	</div>
+	<h1>Users</h1>
+	
+	<ul class="nav nav-pills">
+		<li ng-class="{active: item.values.active==1}" ng-click="setFilterAndReset('active', 1)"><a>Active</a></li>
+		<li ng-class="{active: item.values.active==0}" ng-click="setFilterAndReset('active', 0)"><a>Inactive</a></li>
+	</ul>
+	
+	<div id="list-grid" ng-include="'views/list_grid.html'" ng-init="actions='user_list';"></div>
+</div>
