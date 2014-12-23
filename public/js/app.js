@@ -1,13 +1,13 @@
 'use strict';
 
 
-custom_routes['/Order/list/:type'] = { templateUrl: '/views/order_list.html', controller: 'OrderListCtrl' };
-custom_routes['/Order/list'] = { templateUrl: '/views/order_list.html', controller: 'OrderListRedirectCtrl' };
-custom_routes['/Order/view/:id'] = { templateUrl: '/views/order.html', controller: 'OrderEditCtrl' };
-custom_routes['/Order/view/:id'] = { templateUrl: '/views/order.html', controller: 'OrderEditCtrl' };
-custom_routes['/Product/edit/:id'] = { templateUrl: '/views/product_form.html', controller: 'ProductEditCtrl' };
-custom_routes['/Message/list'] = { templateUrl: '/views/message_list.html', controller: 'MessageListCtrl' };
-custom_routes['/User/list'] = { templateUrl: '/views/user_list.html', controller: 'UserListCtrl' };
+custom_routes['/Order/list/:type'] = { templateUrl: 'views/order_list.html', controller: 'OrderListCtrl' };
+custom_routes['/Order/list'] = { templateUrl: 'views/order_list.html', controller: 'OrderListRedirectCtrl' };
+custom_routes['/Order/view/:id'] = { templateUrl: 'views/order.html', controller: 'OrderEditCtrl' };
+custom_routes['/Order/view/:id'] = { templateUrl: 'views/order.html', controller: 'OrderEditCtrl' };
+custom_routes['/Product/edit/:id'] = { templateUrl: 'views/product_form.html', controller: 'ProductEditCtrl' };
+custom_routes['/Message/list'] = { templateUrl: 'views/message_list.html', controller: 'MessageListCtrl' };
+custom_routes['/User/list'] = { templateUrl: 'views/user_list.html', controller: 'UserListCtrl' };
 
 
 CrudApp.factory('OrderListing', function($resource) { 
