@@ -1,0 +1,8 @@
+TableEditor:
+  classes:
+    MessageType:
+      to_string: |
+         my $name = $row->name; $name =~ s/_/ /g; $name = ucfirst($name);
+    Navigation:
+      to_string: | 
+         return join(' - ', $row->id, $row->uri);   
