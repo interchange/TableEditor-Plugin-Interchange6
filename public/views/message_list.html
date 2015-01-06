@@ -7,7 +7,9 @@
 	<h1>Messages</h1>
 	
 	<ul class="nav nav-pills">
-		<li ng-class="{active: item.values.message_types_id==type.value}" ng-repeat="type in data.column_list[1].options" ng-click="setFilterAndReset('message_types_id', type.value)"><a ng-bind="type.option_label"></a></li>
+		<li ng-class="{active: item.values.message_types_id==type.value}" ng-repeat="type in data.column_list[2].options" ng-click="setFilterAndReset('message_types_id', type.value)"><a ng-bind="type.option_label"></a></li>
+		<li ng-show="item.values.approved!='0'" class="" ng-click="setFilterAndReset('approved', '0')"><a>Requires Approval</a></li>
+		<li ng-show="item.values.approved=='0'" class="active" ng-click="setFilterAndReset('approved', '')"><a>Requires Approval</a></li>
 	</ul>
 	
 	<div id="list-grid" ng-include="'views/list_grid.html'" ng-init=''></div>
