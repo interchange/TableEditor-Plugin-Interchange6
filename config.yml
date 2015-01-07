@@ -1,8 +1,71 @@
 TableEditor:
+  dropdown_threshold: 300
+  page_size: 10
+  primary_key_delimiter: "_"
+  page_sizes: [10, 20, 50, 100]
+  full: [admin]
+  #menu_classes: [Product, Order, Message, User]
+  active_users_interval: 0
   classes:
+    Address:
+      to_string: |
+        join ', ', (
+          (join ' ', ($row->first_name, $row->last_name)),
+          (join ' ', ($row->address, $row->address_2)),
+          (join ' ', ($row->postal_code, $row->city)),
+          $row->state ? ($row->state->name) : undef,
+          $row->country ? ($row->country->name) : undef,
+        );
+    Message:
+     # restricted: [admin]
+      grid_columns: [messages_id, title, message_types_id, message_type, author_users_id, created, last_modified]
+      columns:
+        messages_id:
+          label: Id
+        message_types_id:
+          label: Type
+        author_users_id:
+          label: Author
+        approved_by_users_id:
+          label: Approved By
+        content:
+          column_type: html
     MessageType:
       to_string: |
-         my $name = $row->name; $name =~ s/_/ /g; $name = ucfirst($name);
-    Navigation:
+            my $label = $row->name;
+            $label =~ s/_/ /g;
+            $label =~ s/^\s+|\s+$//g;
+            $label =~ s/(?<! )([A-Z])/ $1/g;
+            $label =~ s/^ (?=[A-Z])//;
+            return ucfirst($label);
+    Media:
+      columns:
+        file:
+          upload_dir: Media
+    User:
+      to_string: "$row->first_name ? $row->first_name . ' '. $row->first_name : $row->username;"
+      grid_columns: [users_id, username, email, first_name, last_name, fail_count, created, last_modified, active]
+    Product:
+      new_redirect: item
       to_string: | 
-         return join(' - ', $row->id, $row->uri);   
+        if ($row->canonical_sku){
+          my $canonical_row = $self->class->schema->row($row->canonical);
+          return $row->name . ' > ' .$canonical_row->to_string ;
+        }
+        return $row->name;   
+             
+      columns:
+        description:
+          column_type: html
+    Navigation:
+      to_string: |    
+        if ($row->parent_id){
+          my $parent_row = $self->class->schema->row($row->_parent);
+          return $parent_row->to_string . ' > ' .$row->uri ;
+        }
+        return $row->uri;        
+    Order:
+      grid_columns: [orders_id, user, shipping_address, order_date, status]
+      to_string: $row->order_number
+       
+    

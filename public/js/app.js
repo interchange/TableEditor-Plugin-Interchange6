@@ -1,13 +1,15 @@
 'use strict';
 
 
-custom_routes['/Order/list/:type'] = { templateUrl: 'views/order_list.html', controller: 'OrderListCtrl' };
-custom_routes['/Order/list'] = { templateUrl: 'views/order_list.html', controller: 'OrderListRedirectCtrl' };
-custom_routes['/Order/view/:id'] = { templateUrl: 'views/order.html', controller: 'OrderEditCtrl' };
-custom_routes['/Order/view/:id'] = { templateUrl: 'views/order.html', controller: 'OrderEditCtrl' };
-custom_routes['/Product/edit/:id'] = { templateUrl: 'views/product_form.html', controller: 'ProductEditCtrl' };
-custom_routes['/Message/list'] = { templateUrl: 'views/message_list.html', controller: 'MessageListCtrl' };
-custom_routes['/User/list'] = { templateUrl: 'views/user_list.html', controller: 'UserListCtrl' };
+custom_routes['/Order/list/:type'] = { templateUrl: '/views/order_list.html', controller: 'OrderListCtrl' };
+custom_routes['/Order/list'] = { templateUrl: '/views/order_list.html', controller: 'OrderListRedirectCtrl' };
+custom_routes['/Order/view/:id'] = { templateUrl: '/views/order.html', controller: 'OrderEditCtrl' };
+custom_routes['/Order/view/:id'] = { templateUrl: '/views/order.html', controller: 'OrderEditCtrl' };
+custom_routes['/Product/edit/:id'] = { templateUrl: '/views/product_form.html', controller: 'ProductEditCtrl' };
+custom_routes['/Product/new'] = { templateUrl: '/views/form.html', controller: 'ProductCreateCtrl' };
+custom_routes['/Message/list'] = { templateUrl: '/views/message_list.html', controller: 'MessageListCtrl' };
+custom_routes['/User/list'] = { templateUrl: '/views/user_list.html', controller: 'UserListCtrl' };
+
 
 
 CrudApp.factory('OrderListing', function($resource) { 
@@ -449,5 +451,29 @@ var MessageListCtrl = function ($scope, $rootScope, $routeParams, $location, Cla
 	}
 
 	$scope.reset();
+};
+
+var ProductCreateCtrl = function ($scope, $routeParams, ClassItem, Item, Url) {
+	$routeParams.class = 'Product'
+		
+		
+	$scope.item = {};
+	$scope.item.values = {};
+	$scope.data = ClassItem.get(
+			{	class: $routeParams.class, },
+			// Success
+			function(data) {
+				$scope.title = "New " + data.class_label;
+			},
+			// Error
+			function() {
+				$scope.error.msg = 'Error retrieving '+$routeParams.class+' information';
+			}
+	);
+	$scope.create = 1;
+
+	$scope.save = Item.update;
+	
+	 
 };
 
