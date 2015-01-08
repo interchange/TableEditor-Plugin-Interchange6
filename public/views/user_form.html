@@ -1,0 +1,102 @@
+<div ng-if="(!create && (!data.columns || !item.class)) || (create && !data.columns)" ng-include="'views/loading.html'" class="loading-box"></div>
+
+<div ng-if="!(!create && (!data.columns || !item.class)) || (create && !data.columns)">
+	<!-- Page heading -->
+	<div class="page-head" ng-init="view='form'" checkUser>
+		<!-- Page heading -->
+		<h1 ng-if="create" class="title">{{ title }}</h1>
+		<h1 ng-if="!create" class="title">
+			<a href="#{{data.class}}/list" class="grey super-title">{{ data.class_label }}</a> {{ item.title }}
+		</h1>
+		<!-- Breadcrumb -->
+	
+		<div class="clearfix"></div>
+	
+	</div>
+	<!-- Page heading ends -->
+	
+	<!-- Matter -->
+	<div class="matter" id="details">
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="alert-box span12"></div>
+			</div>
+			<ul ng-show="data.relations" class="nav nav-pills" ng-if="!create">
+				<li class="active"><a>General</a></li>
+				<li class="sub-menu-item" ng-repeat="link in data.relations">
+					<!-- Has many or Many to many -->
+					<a ng-if="link.type == 'has_many' || link.type == 'many_to_many' || link.type == 'might_have'" 
+						class="sub-menu-link mn" href="#/{{item.class}}/{{item.id}}/{{link.name}}/{{link.type}}">{{link.label}}</a>
+					
+					<!-- Belongs to -->
+					<a ng-if="link.type == 'belongs_to' && link.foreign_id" 
+						class="sub-menu-link bt" href="#/{{link.class_name}}/edit/{{link.foreign_id}}">{{link.label}}</a>
+
+				</li>
+				<li ng-class="{'active': new_password.show}"><a ng-click="showNewPassword()">Reset password</a></li>
+			</ul>
+	
+			<div class="row-fluid">
+				<div class="span12">
+					<form name="form" method="post" enctype="multipart/form-data" class="form-horizontal form" novalidate>
+						<fieldset>
+	
+	
+							<!-- Form Name -->
+							<div class="messages"></div>
+							
+							<div ng-show="new_password.show" style="margin-top: 10px;">
+								<div class="form-group form-field transparent-box">
+									<div class="controls control-group">
+									   <div ng-class="{'has-error': error.msg}">
+											<label class="control-label ">New password</label>
+											<input ng-model="new_password.first" class="form-control"/>
+											
+											<label class="control-label ">Repeat New password</label>
+											<input ng-model="new_password.second" class="form-control"/>
+		
+											<span ng-show="error.msg" ng-bind="error.msg" class="help-block"></span>											
+											<button style="margin-top: 10px;" ng-click="resetPassword()" class="btn btn-success">Reset</button>
+										</div>																										
+									</div>								
+								</div>
+							</div>	
+							
+							<!-- Text input-->
+							<div ng-repeat="column in data.columns">
+								<div ng-if="
+								column.hidden == 0 || (
+									column.hidden != 1 && (
+										!(
+											column.is_auto_increment || 
+											(column.readonly && !column.primary_key) && 
+											create
+										)
+									)
+							   )
+									">
+									<div class="form-group form-field">
+										<div class="controls control-group" ng-class="{'has-error': validationScope.column.$invalid && form.submitted}">
+											<label class="control-label " ng-bind="column.label"></label><span ng-show="column.required">*</span>
+											<div ng-bind="column.description"></div>
+											<ng-form name="validationScope">
+											<div ng-include="'views/column/'+column.display_type+'.html'"></div>
+										</div>
+										</ng-form>
+									</div>
+								</div>
+							</div>
+	
+	
+							<div class="form-group">
+								<button ng-click="save()" class="btn btn-success pull-right">Save</button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+	
+		</div>
+	</div>
+</div>

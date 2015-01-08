@@ -9,6 +9,7 @@ custom_routes['/Product/edit/:id'] = { templateUrl: '/views/product_form.html', 
 custom_routes['/Product/new'] = { templateUrl: '/views/form.html', controller: 'ProductCreateCtrl' };
 custom_routes['/Message/list'] = { templateUrl: '/views/message_list.html', controller: 'MessageListCtrl' };
 custom_routes['/User/list'] = { templateUrl: '/views/user_list.html', controller: 'UserListCtrl' };
+custom_routes['/User/edit/:id'] = { templateUrl: '/views/user_form.html', controller: 'UserEditCtrl' };
 
 
 
@@ -243,6 +244,41 @@ var OrderListCtrl = function ($scope, $rootScope, $routeParams, Item, OrderListi
 	$scope.reset();
 };
 
+var UserEditCtrl = function ($scope, $rootScope, $routeParams, Item, ClassItem, Url, $upload, RelatedItems, RelatedItem, InfoBar, UserEdit) {
+	$routeParams.class = 'User';
+	$scope.new_password = {};
+	
+	$scope.showNewPassword = function() {
+		$scope.new_password.show = !$scope.new_password.show;
+	};
+	
+	$scope.resetPassword = function() {
+		if($scope.new_password.first == $scope.new_password.second){
+			UserEdit.save({
+				action: 'new_password',
+				items: [$scope.item.id],
+				password: $scope.new_password.first,
+			},
+			// Success
+			function(data) {
+				InfoBar.add('success', 'Password updated!');
+				$scope.error = {};
+				$scope.new_password.show = 0;
+			},
+			// Error
+			function(data) {
+				InfoBar.add('error', 'Password not updated!');
+			}
+			);
+			
+		}
+		else {
+			$scope.error.msg = 'Passwords do not match!';
+		}
+	};
+	
+	return EditCtrl($scope, $rootScope, $routeParams, Item, ClassItem, Url, $upload, RelatedItems, RelatedItem);
+}
 
 var ProductEditCtrl = function ($scope, $rootScope, $routeParams, Item, ClassItem, Url, $upload, RelatedItems, RelatedItem) {
 	$scope.error = {};

@@ -130,24 +130,32 @@ post '/User/edit' => sub {
 	
 	if($body->{action} eq 'delete'){
 		for my $item (@{$body->{items}}){
-			my $order = schema->resultset($class)->find($item);
-			$order->delete;
+			my $user = schema->resultset($class)->find($item);
+			$user->delete;
 		}
 		return 1;
 	}
 	elsif($body->{action} eq 'activate'){
 		for my $item (@{$body->{items}}){
-			my $order = schema->resultset($class)->find($item);
-			$order->active('1');
-			$order->update;
+			my $user = schema->resultset($class)->find($item);
+			$user->active('1');
+			$user->update;
 		}
 		return 1;
 	}
 	elsif($body->{action} eq 'deactivate'){
 		for my $item (@{$body->{items}}){
-			my $order = schema->resultset($class)->find($item);
-			$order->active('0');
-			$order->update;
+			my $user = schema->resultset($class)->find($item);
+			$user->active('0');
+			$user->update;
+		}
+		return 1;
+	}
+	elsif($body->{action} eq 'new_password'){
+		for my $item (@{$body->{items}}){
+			my $user = schema->resultset($class)->find($item);
+			$user->password($body->{password});
+			$user->update;
 		}
 		return 1;
 	}
