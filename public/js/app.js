@@ -280,7 +280,7 @@ var UserEditCtrl = function ($scope, $rootScope, $routeParams, Item, ClassItem, 
 	return EditCtrl($scope, $rootScope, $routeParams, Item, ClassItem, Url, $upload, RelatedItems, RelatedItem);
 }
 
-var ProductEditCtrl = function ($scope, $rootScope, $routeParams, Item, ClassItem, Url, $upload, RelatedItems, RelatedItem) {
+var ProductEditCtrl = function ($scope, $rootScope, $routeParams, Item, ClassItem, Url, $upload, RelatedItems, RelatedItem, InfoBar) {
 	$scope.error = {};
 	$routeParams.class = 'Product';
 	$scope.item = Item.read.get({
@@ -324,7 +324,8 @@ var ProductEditCtrl = function ($scope, $rootScope, $routeParams, Item, ClassIte
 	var column;
 	var media_class_name = 'Media'
 	$scope.media_class = ClassItem.get({class: media_class_name});
-	$scope.onImageSelect = function($files) {
+	$scope.onImageSelect = function($files) {		
+		
 	    //$files: an array of files selected, each file has name, size, and type.
 	    for (var i = 0; i < $files.length; i++) {
 	      var file = $files[i];
@@ -345,27 +346,31 @@ var ProductEditCtrl = function ($scope, $rootScope, $routeParams, Item, ClassIte
 				var media = ClassItem.save({
 					class: media_class_name,
 					item: {
+						image_upload: 1,
 						values: {
 							file: savedFilename,
-							author_users_id: "1",
-							media_types_id: "1",
 						}
 					},
 				}, 
 				// Success
 				function(media_data) {
-					var mp = ClassItem.save({
-						class: 'MediaProduct',
-							item: {
-								values: {
-									media_id: media_data.id,
-									sku:  $routeParams.id,
-								}
-							},
-						});
-						$scope.refresh_media();
-					});
-				  });
+					if(media_data.error){
+						InfoBar.add('danger', media_data.error);
+					}
+					else {
+						var mp = ClassItem.save({
+							class: 'MediaProduct',
+								item: {
+									values: {
+										media_id: media_data.id,
+										sku:  $routeParams.id,
+									}
+								},
+							});
+							$scope.refresh_media();
+					}
+				});
+			  });
 				  //.error(...)
 	    }
 	};

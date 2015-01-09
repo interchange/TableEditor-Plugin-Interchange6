@@ -2,6 +2,7 @@ package TableEdit::Plugins::Interchange6::API;
 use Dancer ':syntax';
 use POSIX;
 use Dancer::Plugin::DBIC qw(schema resultset rset);
+use Dancer::Plugin::Auth::Extensible;
 
 prefix '/api';
 
@@ -47,7 +48,7 @@ sub order_rows {
 	return \@table_rows;
 }
 
-get '/Order/all' =>  sub {
+get '/Order/all' => require_login sub {
 	my $class = 'Order';
 	my $class_info = schema_info->class($class);
 	#send_error("Forbidden to read ".param('class'), 403) unless permission('read', $class_info);
@@ -71,7 +72,7 @@ get '/Order/all' =>  sub {
 };
 
 
-get '/Order/view' => sub {
+get '/Order/view' => require_login sub {
 	my $id = params->{id};
 	my $return;
 	my $order = schema->resultset('Order')->find($id);
@@ -93,7 +94,7 @@ get '/Order/view' => sub {
 };
 
 
-post '/Order/edit' => sub {
+post '/Order/edit' => require_login sub {
 	my $body = from_json request->body;
 	
 	if($body->{action} eq 'delete'){
@@ -124,7 +125,7 @@ post '/Order/edit' => sub {
 };
 
 
-post '/User/edit' => sub {
+post '/User/edit' => require_login sub {
 	my $body = from_json request->body;
 	my $class = 'User';
 	
@@ -164,14 +165,28 @@ post '/User/edit' => sub {
 };
 
 
-post '/user' => sub {
+post '/User' => require_login sub {
 	params->{item}->{values}->{username} = lc params->{item}->{values}->{username}; 
 	pass;
 };
 
 
-post '/:class' => sub {
-	debug "Validating ". params->{class}."...";
+post '/Media' => require_login sub {
+	
+	# Add MediaType and user to image upload
+	my $req = request;
+	my $body = from_json request->body;
+	my $item = $body->{'item'};
+	if($item->{image_upload}){
+		my $user = schema->resultset('User')->find({username => session('logged_in_user')});
+		return to_json {error => 'Logged in user not find in db'} unless $user;
+		my $media_type = schema->resultset('MediaType')->find({type => 'image'});
+		return to_json {error => 'Image media type does not exist'} unless $media_type;
+		$item->{values}->{author_users_id} = $user->users_id;
+		$item->{values}->{media_types_id} = $media_type->media_types_id;
+	} 
+	$req->{body} = to_json $body;
+	
 	pass;
 };
 
