@@ -1,15 +1,15 @@
 'use strict';
 
 
-custom_routes['/Order/list/:type'] = { templateUrl: '/views/order_list.html', controller: 'OrderListCtrl' };
-custom_routes['/Order/list'] = { templateUrl: '/views/order_list.html', controller: 'OrderListRedirectCtrl' };
-custom_routes['/Order/view/:id'] = { templateUrl: '/views/order.html', controller: 'OrderEditCtrl' };
-custom_routes['/Order/view/:id'] = { templateUrl: '/views/order.html', controller: 'OrderEditCtrl' };
-custom_routes['/Product/edit/:id'] = { templateUrl: '/views/product_form.html', controller: 'ProductEditCtrl' };
-custom_routes['/Product/new'] = { templateUrl: '/views/form.html', controller: 'ProductCreateCtrl' };
-custom_routes['/Message/list'] = { templateUrl: '/views/message_list.html', controller: 'MessageListCtrl' };
-custom_routes['/User/list'] = { templateUrl: '/views/user_list.html', controller: 'UserListCtrl' };
-custom_routes['/User/edit/:id'] = { templateUrl: '/views/user_form.html', controller: 'UserEditCtrl' };
+custom_routes['/Order/list/:type'] = { templateUrl: 'views/order_list.html', controller: 'OrderListCtrl' };
+custom_routes['/Order/list'] = { templateUrl: 'views/order_list.html', controller: 'OrderListRedirectCtrl' };
+custom_routes['/Order/view/:id'] = { templateUrl: 'views/order.html', controller: 'OrderEditCtrl' };
+custom_routes['/Order/view/:id'] = { templateUrl: 'views/order.html', controller: 'OrderEditCtrl' };
+custom_routes['/Product/edit/:id'] = { templateUrl: 'views/product_form.html', controller: 'ProductEditCtrl' };
+custom_routes['/Product/new'] = { templateUrl: 'views/form.html', controller: 'ProductCreateCtrl' };
+custom_routes['/Message/list'] = { templateUrl: 'views/message_list.html', controller: 'MessageListCtrl' };
+custom_routes['/User/list'] = { templateUrl: 'views/user_list.html', controller: 'UserListCtrl' };
+custom_routes['/User/edit/:id'] = { templateUrl: 'views/user_form.html', controller: 'UserEditCtrl' };
 
 
 

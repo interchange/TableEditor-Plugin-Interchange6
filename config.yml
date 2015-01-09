@@ -41,7 +41,7 @@ TableEditor:
         file:
           upload_dir: Media
     User:
-      to_string: "$row->first_name ? $row->first_name . ' '. $row->first_name : $row->username;"
+      to_string: "$row->first_name ? $row->last_name . ' '. $row->first_name : $row->username;"
       grid_columns: [users_id, username, email, first_name, last_name, fail_count, created, last_modified, active]
       columns:
         password:
