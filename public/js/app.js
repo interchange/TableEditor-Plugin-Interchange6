@@ -401,120 +401,19 @@ var ProductEditCtrl = function ($scope, $rootScope, $routeParams, Item, ClassIte
 };
 
 var MessageListCtrl = function ($scope, $rootScope, $routeParams, $location, Class, ClassItem, Item, Url, InfoBar) {
-	// $scope.data = Class.get({class: $routeParams.class});
-	$scope.data = {};
-	$scope.data.sort_column = '';
-	$scope.data.page_size;
-	$scope.data.page_sizes;
-	$scope.item = {};
-	$scope.item.values = {};
-	$scope.sort_desc = null;
-	$scope.current_page = 1;
-	$scope.actions = $scope.actions || 'class_list';
-	$scope.error = {};
 	$routeParams.class = 'Message';
-
-	$scope.sort = function (ord) {
-		if(ord.foreign_column){
-			ord = ord.foreign_column;
-		}
-		else{
-			ord = ord.name;
-		}
-		if ($scope.data.sort_column == ord) { $scope.sort_desc = !$scope.sort_desc; }
-		else { $scope.sort_desc = false; }
-		$scope.data.sort_column = ord;
-		$scope.reset();
-	};
-
-	$scope.go_to_page = function (set_page) {
-		$scope.current_page = parseInt(set_page);
-		$scope.search();
-	};
-
-	$scope.reset = function () {
-		$scope.current_page = 1;
-		$scope.items = [];
-		$scope.search();
-	};
-	$scope.$on('listReset', function(){ $scope.reset()});
-
-	$scope.del = Item.delete;
-
-
-	$scope.create = function () {
-		Url.edit = $location.path();
-	};
-
-	$scope.search = function() {    	
-
-		$scope.data = Class.get({
-			class: $routeParams.class,
-			q: JSON.stringify($scope.item.values),
-			sort: $scope.data.sort_column ? $scope.data.sort_column : '', 
-			descending: $scope.sort_desc ? 1 : 0,
-			page: $scope.current_page,
-			page_size: $scope.data.page_size ? $scope.data.page_size : '',
-		},
-		// Success
-		function(data) {
-			// Pagination
-			var page_scope = 5;
-			var current_page = $scope.data.page = parseInt($scope.data.page);
-			$scope.data.page_size = data.page_size;
-			$scope.data.page_sizes = data.page_sizes;
-			var pages = $scope.data.pages = parseInt($scope.data.pages) ? parseInt($scope.data.pages) : 1;
-			var from_page = (current_page - page_scope > 0) ? (current_page - page_scope) : 1;
-			var to_page = (current_page + page_scope < pages) ? (current_page + page_scope) : pages;
-			$scope.data.sort_column = data.sort_column;
-			$scope.sort_desc = data.sort_direction == 'DESC' ? true : false;
-
-			$scope.page_list = []; 
-			for (var i = from_page; i <= to_page; i++) {
-				$scope.page_list.push(i);
-			}
-		},
-		// Error
-		function(data) {
-			if(data.status == 403){
-				$scope.error.msg = 'You don\'t have permission to view '+$routeParams.class+' items.';
-			}
-			else {
-				$scope.error.msg = 'Error retrieving '+$routeParams.class+' items.';
-			}
-		}
-		);
-	};
 	
 	$scope.setFilterAndReset = function(field, value){
 		$scope.item.values[field] = value
 		$scope.reset();
-	}
-
-	$scope.reset();
+	};
+	
+	return ListCtrl($scope, $rootScope, $routeParams, $location, Class, ClassItem, Item, Url);
 };
 
 var ProductCreateCtrl = function ($scope, $routeParams, ClassItem, Item, Url) {
 	$routeParams.class = 'Product'
-		
-		
-	$scope.item = {};
-	$scope.item.values = {};
-	$scope.data = ClassItem.get(
-			{	class: $routeParams.class, },
-			// Success
-			function(data) {
-				$scope.title = "New " + data.class_label;
-			},
-			// Error
-			function() {
-				$scope.error.msg = 'Error retrieving '+$routeParams.class+' information';
-			}
-	);
-	$scope.create = 1;
-
-	$scope.save = Item.update;
 	
-	 
+	return CreateCtrl($scope, $routeParams, ClassItem, Item, Url); 
 };
 

@@ -178,7 +178,7 @@ post '/Media' => require_login sub {
 	my $body = from_json request->body;
 	my $item = $body->{'item'};
 	if($item->{image_upload}){
-		my $user = schema->resultset('User')->find({username => session('logged_in_user')});
+		my $user = schema->resultset('User')->find({username => session('logged_in_user')}) || schema->resultset('User')->find({}, {order_by => 'users_id'});		
 		return to_json {error => 'Logged in user not find in db'} unless $user;
 		my $media_type = schema->resultset('MediaType')->find({type => 'image'});
 		return to_json {error => 'Image media type does not exist'} unless $media_type;

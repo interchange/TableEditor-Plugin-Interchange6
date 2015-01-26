@@ -57,7 +57,7 @@ TableEditor:
              
       columns:
         description:
-          column_type: html
+          column_type: tinymce
     Navigation:
       to_string: |    
         if ($row->parent_id){
