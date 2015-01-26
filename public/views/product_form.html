@@ -40,7 +40,7 @@
 				<div class="product-images">
 					<span ng-repeat="img in media.rows" class="item" id="media-{{img.id}}">
 						<span class="remove" ng-click="removeMedia(img)">X</span>
-						<img ng-src="/api/{{media_class.class}}/file/image/{{img.columns.file}}"/>
+						<img ng-src="api/{{media_class.class}}/file/image/{{img.columns.file}}"/>
 					</span>
 					<span class="transparent-box add">
 						Add image <br />
