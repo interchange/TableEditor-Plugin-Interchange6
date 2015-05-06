@@ -60,21 +60,23 @@ get '/Order/all' => require_login sub {
         $class_info->resultset->with_status,
         \&order_rows );
 
-    push @{ $grid_params->{column_list} },
-      {
-        data_type    => "integer",
-        display_type => "integer",
-        label        => "Items",
-        name         => 'items',
-        readonly     => 1,
-      },
-      {
-        data_type    => "varchar",
-        display_type => "varchar",
-        label        => "Status",
-        name         => 'status',
-        readonly     => 1,
-      };
+    $grid_params->{column_list} = [
+        @{ $grid_params->{column_list} },
+        {
+            data_type    => "integer",
+            display_type => "integer",
+            label        => "Items",
+            name         => 'items',
+            readonly     => 1,
+        },
+        {
+            data_type    => "varchar",
+            display_type => "varchar",
+            label        => "Status",
+            name         => 'status',
+            readonly     => 1,
+        },
+    ];
 
 	$grid_params->{statuses} = [map { {type => $_->status, label => ucfirst $_->status} } schema->resultset($class)->search(
 	  { status => {'!=' => ''}},
