@@ -52,13 +52,7 @@ get '/Order/all' => require_login sub {
 	my $class = 'Order';
 	my $class_info = schema_info->class($class);
 	#send_error("Forbidden to read ".param('class'), 403) unless permission('read', $class_info);
-
-    # chain with_status onto the resultset object ($related_items arg)
-    my $grid_params =
-      TableEdit::Routes::API::grid_template_params( $class_info,
-        $class_info->resultset->with_status,
-        \&order_rows );
-
+	my $grid_params = TableEdit::Routes::API::grid_template_params($class_info, undef, \&order_rows);
 	$grid_params->{column_list} =  [@{$grid_params->{column_list}}, {
          "data_type" => "integer",
          "display_type" => "integer",
