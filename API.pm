@@ -34,8 +34,9 @@ sub order_rows {
 			
 			push @$row_data, {value => $value};
 		}
-		push @$row_data, {value => $row->orderlines->count};
-		#push @$row_data, {user => $row->user->username};
+
+        push @$row_data, { value => $row->orderlines->count },
+          { value => $row->status };
 
 		push @table_rows, {
             row => $row_data,
@@ -59,13 +60,24 @@ get '/Order/all' => require_login sub {
         $class_info->resultset->with_status,
         \&order_rows );
 
-	$grid_params->{column_list} =  [@{$grid_params->{column_list}}, {
-         "data_type" => "integer",
-         "display_type" => "integer",
-         "label" => "Items",
-         name => 'items',
-         "readonly" => 1,
-      }];
+    $grid_params->{column_list} = [
+        @{ $grid_params->{column_list} },
+        {
+            data_type    => "integer",
+            display_type => "integer",
+            label        => "Items",
+            name         => 'items',
+            readonly     => 1,
+        },
+        {
+            data_type    => "varchar",
+            display_type => "varchar",
+            label        => "Status",
+            name         => 'status',
+            readonly     => 1,
+        },
+    ];
+
 	$grid_params->{statuses} = [map { {type => $_->status, label => ucfirst $_->status} } schema->resultset($class)->search(
 	  { status => {'!=' => ''}},
 	  {
