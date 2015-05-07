@@ -34,8 +34,9 @@ sub order_rows {
 			
 			push @$row_data, {value => $value};
 		}
-		push @$row_data, {value => $row->orderlines->count};
-		#push @$row_data, {user => $row->user->username};
+
+        push @$row_data, { value => $row->orderlines->count },
+          { value => $row->status };
 
 		push @table_rows, {
             row => $row_data,
@@ -51,23 +52,34 @@ sub order_rows {
 get '/Order/all' => require_login sub {
 	my $class = 'Order';
 	my $class_info = schema_info->class($class);
-	#send_error("Forbidden to read ".param('class'), 403) unless permission('read', $class_info);
-	my $grid_params = TableEdit::Routes::API::grid_template_params($class_info, undef, \&order_rows);
-	$grid_params->{column_list} =  [@{$grid_params->{column_list}}, {
-         "data_type" => "integer",
-         "display_type" => "integer",
-         "label" => "Items",
-         name => 'items',
-         "readonly" => 1,
-      }];
-	$grid_params->{statuses} = [map { {type => $_->status, label => ucfirst $_->status} } schema->resultset($class)->search(
-	  { status => {'!=' => ''}},
-	  {
-	    columns => [ qw/status/ ],
-	    distinct => 1
-	  }
-	)->all];
-	
+
+    send_error( "Forbidden to read " . param('class'), 403 )
+      unless permission( 'read', $class_info );
+
+    # we cannot pass $class_info->resultset->with_status directly as 2nd arg
+    # to grid_template_params so we assign to var 1st
+    my $resultset = $class_info->resultset->with_status;
+    my $grid_params =
+      TableEdit::Routes::API::grid_template_params( $class_info,
+        $resultset,
+        \&order_rows );
+
+    push @{ $grid_params->{column_list} },
+      {
+        data_type    => "integer",
+        display_type => "integer",
+        label        => "Items",
+        name         => 'items',
+        readonly     => 1,
+      },
+      {
+        data_type    => "text",
+        display_type => "text",
+        label        => "Status",
+        name         => 'status',
+        readonly     => 1,
+      };
+
 	return to_json($grid_params, {allow_unknown => 1});
 };
 
