@@ -54,7 +54,7 @@ get '/Order/all' => require_login sub {
 	my $class_info = schema_info->class($class);
 
     send_error( "Forbidden to read " . param('class'), 403 )
-      unless permission( 'read', $class_info );
+      unless schema_info->permissions->permission( 'read', $class_info );
 
     # we cannot pass $class_info->resultset->with_status directly as 2nd arg
     # to grid_template_params so we assign to var 1st
